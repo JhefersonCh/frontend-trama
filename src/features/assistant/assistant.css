@@ -1,0 +1,53 @@
+.fa-panel {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 60;
+  width: min(400px, calc(100vw - 2rem)); height: min(640px, calc(100dvh - 2rem));
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--line-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+  animation: rise 220ms var(--ease-out) backwards;
+}
+.fa-panel[hidden] { display: none; }
+.fa-head { display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0.6rem 0.55rem 0.8rem; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.fa-mark { color: var(--accent); flex-shrink: 0; }
+.fa-title { font-size: 0.92rem; font-weight: 650; letter-spacing: -0.01em; margin-right: auto; }
+.fa-link { font-size: 0.74rem; color: var(--accent-text); background: none; border: 0; padding: 0.2rem 0.3rem; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.fa-icon { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius); background: transparent; border: 1px solid transparent; color: var(--muted); cursor: pointer; }
+.fa-icon:hover { color: var(--text); border-color: var(--line-strong); }
+.fa-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.fa-wait { margin: auto; color: var(--muted); font-size: 0.88rem; }
+.fa-panel .cv-col { padding: 1rem 0.9rem 1.25rem; }
+.fa-panel .cv-dock { padding: 0 0.7rem 0.6rem; }
+.fa-orb {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 60; width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer; color: var(--accent);
+  background: var(--surface); border: 1px solid var(--accent-line); box-shadow: var(--shadow-lg);
+  transition: transform 160ms var(--ease-out);
+}
+.fa-orb:active { transform: scale(0.94); }
+.fa-orb[data-voice] { box-shadow: 0 0 0 3px var(--accent-soft), 0 0 14px var(--accent-glow); }
+@media (max-width: 640px) {
+  .fa-panel { right: 0; left: 0; bottom: 0; width: auto; height: 85dvh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; border-bottom: 0; }
+  .fa-orb { right: 0.75rem; bottom: 0.75rem; }
+}
+@media (prefers-reduced-motion: reduce) { .fa-panel { animation: none; } }
+
+/* Top-bar wake-word indicator */
+.wake-ind { display: inline-flex; align-items: center; gap: 0.4rem; height: 30px; padding: 0 0.55rem; border: 1px solid var(--line-strong); border-radius: var(--radius); background: transparent; color: var(--muted); cursor: pointer; font-size: 0.7rem; }
+.wake-ind:hover { color: var(--text); }
+.wake-ind .led { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.wake-ind[data-state='listening'] .led { background: var(--ok); box-shadow: 0 0 0 2px var(--ok-soft), 0 0 8px var(--ok); }
+.wake-ind[data-state='loading'] .led, .wake-ind[data-state='checking'] .led { background: var(--warn); }
+.wake-ind[data-state='error'] .led, .wake-ind[data-state='missing'] .led { background: var(--err); }
+.wake-ind[data-state='busy'] .led { background: var(--accent); }
+
+/* Compact sizing inside the floating panel */
+.fa-head { gap: 0.35rem; }
+.fa-chip { max-width: 9.5rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 1; }
+.fa-icon:disabled { opacity: 0.4; cursor: default; }
+.fa-panel .cv-col { padding: 0.8rem 0.75rem 1rem; font-size: 0.9rem; }
+.fa-panel .vbar { gap: 0.45rem; min-height: 36px; }
+.fa-panel .vbar-label { font-size: 0.86rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fa-panel .vbar-sub { font-size: 0.72rem; }
+.fa-panel .vbar-int { padding-inline: 0.6rem; font-size: 0.78rem; flex-shrink: 0; }
+.fa-panel .vbar-tools { flex-shrink: 0; }
+.fa-panel .cv-hint { display: none; }
