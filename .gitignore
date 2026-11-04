@@ -7,3 +7,7 @@ dist/
 # Voice assets (generated / downloaded)
 public/vad/
 public/vosk/*.tar.gz
+
+# Local tooling
+.lean-ctx/
+.vosk-tmp/
