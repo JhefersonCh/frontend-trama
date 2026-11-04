@@ -1,0 +1,104 @@
+/* xyflow canvases (lazy chunk). Theme comes from the app tokens, not xyflow's palette. */
+.xf-host { width: 100%; min-height: 200px; }
+.xf-wrap { position: relative; width: 100%; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--bg-raise); animation: fade-in 200ms ease; }
+.xf-canvas { position: absolute; inset: 0; }
+
+.xf-wrap .react-flow {
+  --xy-background-color: transparent;
+  --xy-background-pattern-color: var(--line-strong);
+  --xy-background-pattern-dots-color: var(--line-strong);
+  --xy-edge-stroke: var(--line-strong);
+  --xy-edge-stroke-width: 1.6;
+  --xy-node-background-color: transparent;
+  --xy-node-border: none;
+  --xy-node-boxshadow-hover: none;
+  --xy-node-boxshadow-selected: none;
+  --xy-controls-button-background-color: var(--surface-2);
+  --xy-controls-button-background-color-hover: var(--surface-3);
+  --xy-controls-button-color: var(--text-2);
+  --xy-controls-button-color-hover: var(--text);
+  --xy-controls-button-border-color: var(--line);
+  --xy-controls-box-shadow: 0 0 0 1px var(--line);
+  background: transparent;
+  font-family: var(--font-body);
+}
+.xf-wrap .react-flow__background circle { fill: var(--line-strong); }
+.xf-wrap .react-flow__node { cursor: default; }
+.xf-wrap .react-flow__pane { cursor: default; }
+.xf-wrap .react-flow__controls { border-radius: 6px; overflow: hidden; }
+.xf-wrap .react-flow__controls-button svg { fill: currentColor; }
+.xf-handle { opacity: 0; width: 1px !important; height: 1px !important; min-width: 0 !important; min-height: 0 !important; border: 0 !important; pointer-events: none; }
+
+.xf-explore {
+  position: absolute; z-index: 5; top: 8px; right: 8px; display: inline-flex; align-items: center; gap: 0.35rem;
+  height: 26px; padding: 0 0.6rem; font-family: var(--font-mono); font-stretch: 87.5%; font-size: 0.62rem; letter-spacing: 0.04em;
+  color: var(--text-2); background: color-mix(in srgb, var(--surface) 85%, transparent); border: 1px solid var(--line); border-radius: 5px; cursor: pointer;
+  backdrop-filter: blur(4px); transition: color 160ms ease, border-color 160ms ease, transform 140ms var(--ease-out);
+}
+.xf-explore:active { transform: scale(0.97); }
+.xf-explore[aria-pressed='true'] { color: var(--accent-text); border-color: var(--accent-line); background: var(--accent-soft); }
+.xf-explore:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-soft); border-color: var(--accent); }
+@media (hover: hover) and (pointer: fine) { .xf-explore:hover { color: var(--text); border-color: var(--line-strong); } }
+
+/* ---- topology nodes ---- */
+.xt-node {
+  width: 168px; display: grid; grid-template-columns: 36px minmax(0, 1fr); align-items: center; gap: 0.55rem;
+  padding: 0.5rem 0.6rem; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 9px;
+  box-shadow: var(--inset-hi), 0 6px 18px -12px rgb(0 0 0 / 0.6);
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 140ms var(--ease-out);
+}
+.xt-node[data-clickable] { cursor: pointer; }
+.xt-node[data-clickable]:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .xt-node[data-clickable]:hover { border-color: var(--accent-line); } }
+.xt-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; color: var(--text-2); background: var(--surface-2); border: 1px solid var(--line); }
+.xt-text { display: grid; gap: 0.05rem; min-width: 0; }
+.xt-kind { font-family: var(--font-mono); font-stretch: 87.5%; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.xt-label { font-size: 0.82rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.xt-status { display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--font-mono); font-stretch: 87.5%; font-size: 0.6rem; color: var(--text-2); }
+.xt-status .gu-led { width: 7px; height: 7px; }
+.xt-node[data-status='fail'] { border-color: color-mix(in srgb, var(--err) 60%, var(--line-strong)); box-shadow: var(--inset-hi), 0 0 0 3px var(--err-soft); }
+.xt-node[data-status='fail'] .xt-icon { color: var(--err); border-color: color-mix(in srgb, var(--err) 40%, transparent); background: var(--err-soft); }
+.xt-node[data-status='fail'] .xt-status { color: var(--err); }
+.xt-node[data-status='warn'] { border-color: color-mix(in srgb, var(--warn) 55%, var(--line-strong)); }
+.xt-node[data-status='warn'] .xt-icon { color: var(--warn); background: var(--warn-soft); }
+.xt-node[data-status='warn'] .xt-status { color: var(--warn); }
+.xt-node[data-status='ok'] .xt-icon { color: var(--ok); }
+.xt-node[data-status='unknown'] { border-style: dashed; }
+.xt-node[data-status='fail'] .gu-led { animation: xt-blink 1.4s steps(2, jump-none) infinite; }
+@keyframes xt-blink { 50% { opacity: 0.35; } }
+
+/* ---- topology edges ---- */
+.xf-wrap .react-flow__edge.xt-edge .react-flow__edge-path { stroke-width: 2; }
+.xf-wrap .react-flow__edge.xt-edge-ok .react-flow__edge-path { stroke: color-mix(in srgb, var(--ok) 75%, var(--line-strong)); }
+.xf-wrap .react-flow__edge.xt-edge-unknown .react-flow__edge-path { stroke: var(--faint); stroke-dasharray: 2 5; stroke-linecap: round; }
+.xf-wrap .react-flow__edge.xt-edge-fail .react-flow__edge-path { stroke: var(--err); stroke-dasharray: 7 5; animation: xt-dash 0.9s linear infinite; }
+.xf-wrap .react-flow__edge.xt-edge-fail.is-still .react-flow__edge-path { animation: none; }
+@keyframes xt-dash { to { stroke-dashoffset: -24; } }
+
+/* ---- diagnosis flow nodes ---- */
+.xd-node {
+  width: 178px; display: grid; gap: 0.2rem; padding: 0.45rem 0.65rem 0.55rem;
+  background: var(--surface); border: 1px solid var(--line-strong); border-left-width: 3px; border-radius: 7px;
+  box-shadow: var(--inset-hi), 0 6px 18px -12px rgb(0 0 0 / 0.6);
+}
+.xd-head { display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--font-mono); font-stretch: 87.5%; font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.xd-label { font-size: 0.8rem; font-weight: 500; line-height: 1.3; color: var(--text); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.xd-detail { font-size: 0.68rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.xd-node[data-kind='question'] { border-left-color: var(--info); }
+.xd-node[data-kind='question'] .xd-head { color: var(--info); }
+.xd-node[data-kind='answer'] { border-left-color: var(--text-2); border-radius: 14px; }
+.xd-node[data-kind='rule'] { border-left-color: var(--accent); background: linear-gradient(90deg, var(--accent-soft), transparent 70%), var(--surface); }
+.xd-node[data-kind='rule'] .xd-head { color: var(--accent-text); }
+.xd-node[data-kind='rule'] .xd-label { font-family: var(--font-mono); font-stretch: 87.5%; font-size: 0.72rem; }
+.xd-node[data-kind='hypothesis'] { border-left-color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, var(--line-strong)); background: linear-gradient(90deg, var(--ok-soft), transparent 70%), var(--surface); }
+.xd-node[data-kind='hypothesis'] .xd-head { color: var(--ok); }
+.xd-node[data-kind='action'] { border-left-color: var(--warn); border-style: dashed; border-left-style: solid; }
+.xd-node[data-kind='action'] .xd-head { color: var(--warn); }
+.xf-wrap .react-flow__edge.xd-edge .react-flow__edge-path { stroke: var(--muted); stroke-width: 1.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  .xf-wrap { animation: none; }
+  .xf-wrap .react-flow__edge.xt-edge-fail .react-flow__edge-path { animation: none; }
+  .xt-node[data-status='fail'] .gu-led { animation: none; }
+  .xt-node[data-clickable]:active, .xf-explore:active { transform: none; }
+}
