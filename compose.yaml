@@ -1,0 +1,17 @@
+# TRAMA frontend. Requires the trama-backend stack running first (it creates the trama-net network).
+# Run: docker compose up -d --build
+name: trama-frontend
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    networks: [trama-net]
+
+networks:
+  trama-net:
+    external: true
