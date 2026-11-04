@@ -1,0 +1,44 @@
+/* Drawer + Progress (shared by Tickets, Conocimiento, Runtime). Uses tokens from styles.css. */
+
+.drawer-backdrop {
+  position: fixed; inset: 0; z-index: 40;
+  display: flex; justify-content: flex-end;
+  background: var(--backdrop);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  animation: fade-in 200ms var(--ease-out);
+}
+.drawer {
+  width: min(520px, 100%); height: 100%;
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border-left: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-lg);
+  animation: drawer-in 260ms var(--ease-drawer);
+}
+.drawer:focus { outline: none; }
+.drawer-head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+  padding: 1.1rem 1rem 1rem 1.4rem; border-bottom: 1px solid var(--line);
+}
+.drawer-titles { min-width: 0; }
+.drawer-titles h3 { font-size: 1.2rem; line-height: 1.25; overflow-wrap: anywhere; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 1.25rem 1.4rem 2rem; }
+.drawer-backdrop[data-closing] { animation: fade-out 180ms var(--ease-out) forwards; }
+.drawer-backdrop[data-closing] .drawer { animation: drawer-out 180ms var(--ease-out) forwards; }
+@keyframes drawer-in { from { transform: translateX(100%); } }
+@keyframes drawer-out { to { transform: translateX(100%); } }
+
+.pbar { position: relative; height: 6px; overflow: hidden; background: var(--bg-raise); border: 1px solid var(--line-strong); border-radius: 2px; }
+.pbar-fill {
+  position: absolute; inset: 0; transform-origin: 0 50%; transform: scaleX(0);
+  background: var(--accent); transition: transform 300ms var(--ease-out);
+}
+.pbar-warn .pbar-fill { background: var(--warn); }
+.pbar-ok .pbar-fill { background: var(--ok); }
+.pbar.is-indeterminate .pbar-fill { width: 35%; transform: none; animation: sweep 1.1s var(--ease-in-out) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer { animation-name: fade-in; }
+  .drawer-backdrop[data-closing] .drawer { animation-name: fade-out; }
+  .pbar.is-indeterminate .pbar-fill { width: 100%; animation: blink 1s steps(2, jump-none) infinite; }
+}
