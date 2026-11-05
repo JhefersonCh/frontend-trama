@@ -52,12 +52,12 @@ El modelo de lenguaje solo **interpreta y redacta**. Lo que se decide, lo decide
 ```mermaid
 flowchart LR
   subgraph Navegador
-    UI[React SPA] --> VAD[Silero VAD<br/>ONNX Runtime Web]
-    UI --> WW[Vosk<br/>"oye trama"]
+    UI["React SPA"] --> VAD["Silero VAD<br/>ONNX Runtime Web"]
+    UI --> WW["Vosk<br/>oye trama"]
   end
-  UI -- REST /api --> NG[nginx]
-  UI -- WebSocket /ws --> NG
-  NG --> BE[backend:8000<br/>FastAPI]
+  UI -- "REST /api" --> NG["nginx"]
+  UI -- "WebSocket /ws" --> NG
+  NG --> BE["backend:8000<br/>FastAPI"]
 ```
 
 El código está organizado **por funcionalidad** (*screaming architecture*): cada carpeta de `src/features/` es una pantalla o capacidad completa.
